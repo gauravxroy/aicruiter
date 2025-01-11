@@ -75,6 +75,8 @@ function Navbar() {
             <li>A</li>
             <li>b</li>
             <li>c</li>
+            <li>c</li>
+            <li>c</li>
           </ul>
         </div>
       )}
