@@ -13,9 +13,9 @@ export default function SignInPage() {
           className="w-full space-y-6 rounded-2xl bg-white px-4 py-10 shadow-md ring-1 ring-black/5 sm:w-96 sm:px-8"
         >
           <header className="text-center flex flex-col items-center">
-            <Image src={img} width="60" height="60" alt="Logo" />
-            <h1 className="mt-2 text-xl font-medium tracking-tight text-zinc-950">
-              Sign in to Clover
+            <Image src={img} width="60" height="0" alt="Logo" />
+            <h1 className=" text-xl font-medium tracking-tight text-zinc-950">
+              Sign in to AIcreiter
             </h1>
           </header>
 
