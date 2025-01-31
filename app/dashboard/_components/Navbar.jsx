@@ -1,222 +1,135 @@
 "use client";
-import React, { useState } from "react";
 import Image from "next/image";
-import { SignedIn, UserButton, UserProfile } from "@clerk/nextjs";
+import React, { useState } from "react";
+import img from "../../../public/image.svg";
+import { UserButton } from "@clerk/nextjs";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "components/ui/button";
-import { HiOutlineMenuAlt4 } from "react-icons/hi";
-import { IoClose } from "react-icons/io5";
+
 function Navbar() {
-  const navItem = [""];
-  const [isOpen, setIsOpen] = useState(false);
   const path = usePathname();
-  const menuBtn = () => {
-    setIsOpen(!isOpen);
-  };
-  const menuClosebtn = () => {
-    setIsOpen(false);
+  const [expanded, setExpanded] = useState(false);
+
+  const navLinks = [
+    { title: "Features", href: "#" },
+    { title: "Pricing", href: "#" },
+    { title: "Automation", href: "#" },
+  ];
+
+  const handleMenuToggle = () => {
+    setExpanded(!expanded);
   };
   return (
-    <>
-      <div className="flex p-3 items-center justify-between bg-[#e5e5e5] ">
-        <div className="flex justify-center items-center gap-2">
-          <Image
-            src={"/image.svg"}
-            alt="logo"
-            className="m-0"
-            width={40}
-            height={40}
-          />
-          <h1 className="text-red-500 font-bold text-2xl ">AIcruiter</h1>
-        </div>
-        <ul
-          className=" md:flex hidden
-        gap-6"
-        >
-          <li
-            className={`${
-              path === "/dashboard" && "text-red-600 font-bold "
-            } hover:text-red-600 hover:font-bold transition-all  cursor-pointer `}
-          >
-            Dashboard
-          </li>
-          <li
-            className={`${
-              path === "/dashboard/questions" && "text-red-600 font-bold "
-            } hover:text-red-600 hover:font-bold transition-all  cursor-pointer `}
-          >
-            Questions{" "}
-          </li>
-          <li
-            className={`${
-              path === "/help" && "text-red-600 font-bold "
-            } hover:text-red-600 hover:font-bold transition-all  cursor-pointer `}
-          >
-            How its works{" "}
-          </li>
-        </ul>
+    <header className="py-4 md:py-6">
+      <div className="container px-4 mx-auto sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <Link
+              href="/dashboard"
+              title="Home"
+              className="flex rounded outline-none "
+            >
+              <Image src={img} width={40} height={40} alt="logo" />
+            </Link>
+          </div>
 
-        {/* nav menu button */}
-        <div className="md:hidden">
-          <button onClick={menuBtn}>
-            {isOpen ? <IoClose /> : <HiOutlineMenuAlt4 />}
-          </button>
-        </div>
-        {/* nav menu */}
+          {/* Mobile Menu Button */}
+          <div className="flex lg:hidden">
+            <button
+              type="button"
+              className="text-gray-900"
+              onClick={handleMenuToggle}
+              aria-expanded={expanded}
+            >
+              <span className={!expanded ? "" : "hidden"} aria-hidden="true">
+                <svg
+                  className="w-7 h-7"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </span>
+              <span className={expanded ? "" : "hidden"} aria-hidden="true">
+                <svg
+                  className="w-7 h-7"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
 
-        <UserButton />
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex lg:ml-16 lg:items-center lg:justify-center lg:space-x-10 xl:space-x-16">
+            {navLinks.map((link) => (
+              <a
+                key={link.title}
+                href={link.href}
+                className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+              >
+                {link.title}
+              </a>
+            ))}
+          </div>
+
+          {/* Desktop Auth Buttons */}
+          <div className="hidden lg:ml-auto lg:flex lg:items-center lg:space-x-10">
+            <UserButton />
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        {expanded && (
+          <nav>
+            <div className="px-1 py-8">
+              <div className="grid gap-y-7">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.title}
+                    href={link.href}
+                    className="flex items-center p-3 -m-3 text-base font-medium text-gray-900 transition-all duration-200 rounded-xl hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+                  >
+                    {link.title}
+                  </a>
+                ))}
+                <a
+                  href="#"
+                  className="flex items-center p-3 -m-3 text-base font-medium text-gray-900 transition-all duration-200 rounded-xl hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+                >
+                  Customer Login
+                </a>
+                <a
+                  href="#"
+                  className="inline-flex items-center justify-center px-6 py-3 text-base font-bold leading-7 text-white transition-all duration-200 bg-gray-900 border border-transparent rounded-xl hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                  role="button"
+                >
+                  Sign up
+                </a>
+              </div>
+            </div>
+          </nav>
+        )}
       </div>
-      {isOpen && (
-        <div className="md:hidden bg-red-500 rounded-sm p-3   m-3 ">
-          <span>
-            <button onClick={menuClosebtn}>close</button>
-          </span>
-          <ul>
-            <li>A</li>
-            <li>b</li>
-            <li>c</li>
-            <li>c</li>
-            <li>c</li>
-          </ul>
-        </div>
-      )}
-    </>
+    </header>
   );
 }
 
 export default Navbar;
-
-// // <SignedIn>
-// //
-// //         </SignedIn>
-
-// import React from "react";
-// import {
-//   Navbar,
-//   NavbarBrand,
-//   NavbarContent,
-//   NavbarItem,
-//   NavbarMenuToggle,
-//   NavbarMenu,
-//   NavbarMenuItem,
-//   Link,
-//   Button,
-// } from "@nextui-org/react";
-
-// export const AcmeLogo = () => {
-//   return (
-//     <svg fill="none" height="36" viewBox="0 0 32 32" width="36">
-//       <path
-//         clipRule="evenodd"
-//         d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
-//         fill="currentColor"
-//         fillRule="evenodd"
-//       />
-//     </svg>
-//   );
-// };
-// import React from "react";
-// import {
-//   Navbar,
-//   NavbarBrand,
-//   NavbarContent,
-//   NavbarItem,
-//   NavbarMenuToggle,
-//   NavbarMenu,
-//   NavbarMenuItem,
-//   Link,
-//   Button,
-// } from "@nextui-org/react";
-
-// export const AcmeLogo = () => {
-//   return (
-//     <svg fill="none" height="36" viewBox="0 0 32 32" width="36">
-//       <path
-//         clipRule="evenodd"
-//         d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
-//         fill="currentColor"
-//         fillRule="evenodd"
-//       />
-//     </svg>
-//   );
-// };
-
-// export default function App() {
-//   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-//   const menuItems = [
-//     "Profile",
-//     "Dashboard",
-//     "Activity",
-//     "Analytics",
-//     "System",
-//     "Deployments",
-//     "My Settings",
-//     "Team Settings",
-//     "Help & Feedback",
-//     "Log Out",
-//   ];
-
-//   return (
-//     <Navbar onMenuOpenChange={setIsMenuOpen}>
-//       <NavbarContent>
-//         <NavbarMenuToggle
-//           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-//           className="sm:hidden"
-//         />
-//         <NavbarBrand>
-//           <AcmeLogo />
-//           <p className="font-bold text-inherit">ACME</p>
-//         </NavbarBrand>
-//       </NavbarContent>
-
-//       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-//         <NavbarItem>
-//           <Link color="foreground" href="#">
-//             Features
-//           </Link>
-//         </NavbarItem>
-//         <NavbarItem isActive>
-//           <Link aria-current="page" href="#">
-//             Customers
-//           </Link>
-//         </NavbarItem>
-//         <NavbarItem>
-//           <Link color="foreground" href="#">
-//             Integrations
-//           </Link>
-//         </NavbarItem>
-//       </NavbarContent>
-//       <NavbarContent justify="end">
-//         <NavbarItem className="hidden lg:flex">
-//           <Link href="#">Login</Link>
-//         </NavbarItem>
-//         <NavbarItem>
-//           <Button as={Link} color="primary" href="#" variant="flat">
-//             Sign Up
-//           </Button>
-//         </NavbarItem>
-//       </NavbarContent>
-//       <NavbarMenu>
-//         {menuItems.map((item, index) => (
-//           <NavbarMenuItem key={`${item}-${index}`}>
-//             <Link
-//               className="w-full"
-//               color={
-//                 index === 2
-//                   ? "primary"
-//                   : index === menuItems.length - 1
-//                   ? "danger"
-//                   : "foreground"
-//               }
-//               href="#"
-//               size="lg"
-//             >
-//               {item}
-//             </Link>
-//           </NavbarMenuItem>
-//         ))}
-//       </NavbarMenu>
-//     </Navbar>
-//   );
-// }
